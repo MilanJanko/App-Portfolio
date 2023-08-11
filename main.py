@@ -1,7 +1,20 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title='Portfolio', layout="wide")
+
+"""Defining a function to resize image for web app, in order to make UI better."""
+
+
+def resize_image(img):
+    image_path = "images/" + img
+    image_size = (450, 280)
+    resized = Image.open(image_path)
+    resized = resized.resize(image_size, Image.ANTIALIAS)
+    return resized
+
+
 col1, col2 = st.columns(2)
 
 with col1:
@@ -39,9 +52,15 @@ col3, col4 = st.columns(2)
 df = pd.read_csv("projects.csv", sep=";")
 
 with col3:
-    for index, row in df[:11].iterrows():
+    for index, row in df[:10].iterrows():
         st.header(row['title'])
+        st.write(row['description'])
+        img = resize_image(row['image'])
+        st.image(img)
 
 with col4:
-    for index,row in df[11:].iterrows():
+    for index, row in df[10:].iterrows():
         st.header(row['title'])
+        st.write(row['description'])
+        img = resize_image(row['image'])
+        st.image(img)
